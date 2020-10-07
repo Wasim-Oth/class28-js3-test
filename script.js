@@ -1,73 +1,49 @@
-'use strict'
+const select= document.querySelector('select')
+const container= document.createElement('div')
+container.style.cssText= 'display: none;  margin: auto; padding: 1rem; width:20rem; box-shadow: 4px 4px 10px black;'
+const title = document.createElement('h2')
+title.style.textAlign='center'
+const img = document.createElement('img')
+const description = document.createElement('p')
 
-function main(){
+document.body.appendChild(container)
+container.appendChild(title)
+container.appendChild(img)
+container.appendChild(description)
 
-const url1 = "http://www.omdbapi.com/?i=tt3896198&apikey=e92ab3d6";
-const url2 = "http://www.omdbapi.com/?i=tt1285016&apikey=e92ab3d6";
-const url3 = "http://www.omdbapi.com/?i=tt1285014&apikey=e92ab3d6";
+select.addEventListener('change', getMovie)
 
-const body = document.body;
-const select = document.createElement('select');
-select.innerHTML= '<option>' + 'selct a movie' + '</option>'
-body.appendChild(select);
+            // using async function  
+async function getMovie(event){
+    try{
+    const url = `http://www.omdbapi.com/?apikey=e92ab3d6&t=${event.target.value}`;
+    const response = await fetch (url)
+    const data = await response.json()
+    // console.log(data)
+    container.style.display= 'block'
+    title.innerText= data.Title
+    img.src= data.Poster
+    description.innerText= data.Plot
 
-const conatiner = document.createElement('div');
-const poster = document.createElement('img');
-const plot = document.createElement('p');
-const name = document.createElement('h2');
+     } catch {
+         console.error('ops! something went wrong')
+     }
 
-conatiner.appendChild(name)
-conatiner.appendChild(poster)
-conatiner.appendChild(plot)
-body.appendChild(conatiner)
-
-
-// select.addEventListener('change', appendToDom)
-
-function getOptions(){
-const mypromis = axios.get(url1);
-mypromis.then((result) => {
-    console.log(result.data)
-    const title = result.data.Title
-    select.innerHTML += '<option>' +  title + '</option>'
-    select.addEventListener('change', function(){
-        if (result.data.Title === select.value){
-            name.innerText = result.data.Title
-            poster.src = result.data.Poster
-            plot.innerText= result.data.Plot       
-         } 
-    })
-    return axios.get(url2);
-
-    })
-    .then((result) => {
-        const title = result.data.Title
-        select.innerHTML += '<option>' +  title + '</option>'
-        select.addEventListener('change', function(){
-            if (result.data.Title === select.value){
-                name.innerText = result.data.Title
-                poster.src = result.data.Poster
-                plot.innerText= result.data.Plot       
-             }
-            })
-        return axios.get(url3);
-    })
-
-    .then((result) => {
-        const title = result.data.Title
-        select.innerHTML += '<option>' +  title + '</option>'
-        select.addEventListener('change', function(){
-            if (result.data.Title === select.value){
-                name.innerText = result.data.Title
-                poster.src = result.data.Poster
-                plot.innerText= result.data.Plot       
-             }
-            })
-    }) 
- }
-getOptions()
-    
-}
-main()
+    }
 
 
+        //  using old promises
+
+// function getMovie(event) {
+//     const url = `http://www.omdbapi.com/?apikey=e92ab3d6&t=${event.target.value}`;
+//     const response = fetch(url)
+//     response.then((result) => {
+//         const data = result.json()
+//         data.then((movieInfo) =>{
+//             container.style.display= 'block'
+//             title.innerText= movieInfo.Title
+//             img.src= movieInfo.Poster
+//             description.innerText= movieInfo.Plot
+//         })
+//     }).catch ( err => console.error('ops! something went wrong' + err))
+// }
