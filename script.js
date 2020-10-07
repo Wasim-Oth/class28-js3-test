@@ -1,4 +1,4 @@
-const select= document.querySelector('select')
+orconst select= document.querySelector('select')
 const container= document.createElement('div')
 container.style.cssText= 'display: none;  margin: auto; padding: 1rem; width:20rem; box-shadow: 4px 4px 10px black;'
 const title = document.createElement('h2')
@@ -25,8 +25,8 @@ async function getMovie(event){
     img.src= data.Poster
     description.innerText= data.Plot
 
-     } catch {
-         console.error('ops! something went wrong')
+     } catch (error) {
+         console.error(`ops! something went wrong ${error}`)
      }
 
     }
